@@ -10,7 +10,7 @@ Requirements / installation
 ---------------------------
 
 The class was developed on/for Scientific Linux release 6.4 (Carbon) though it
-should work with most recent Linux distributions.
+should work with most recent Linux distributions. It was tested for CentOS 6.4.
 
 The main interface uses Python version 2.x.x .
 
