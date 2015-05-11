@@ -15,7 +15,7 @@ Messages are communicated through a Celery distributed processing queue system.
 LICENSE
 -------
 
-see https://github.com/crim-ca/JASS/tree/master/THIRD_PARTY_LICENSES.rst
+see https://github.com/crim-ca/Service/tree/master/THIRD_PARTY_LICENSES.rst
 
 ------------
 Installation
