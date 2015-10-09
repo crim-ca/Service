@@ -29,8 +29,8 @@ class Document(object):
         :param path: Local path to the document copy.
         """
         self.logger = logging.getLogger(__name__)
-        self.logger.debug(u"Creating an instance with parameters url={r},"
-                          u" path={p}".format(r=url, p=path))
+        self.logger.debug("Creating an instance with parameters url=%s,"
+                          " path=%s", url, path)
         self.url = url
         self.local_path = path
         self.transfer_time = datetime.now()

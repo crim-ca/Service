@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding:utf-8
 
 """
@@ -29,19 +29,18 @@ def download(doc_msg):
 
     :param doc_msg: dict containing the following keys::
                     url: path to a distant document
-                    credentials: credentials to access document
     :returns: object of type Document.
     """
     logger = getLogger(__name__)
     url = doc_msg['url']
-    logger.info(u"Getting remote document at «{url}»".format(url=url))
+    logger.info("Getting remote document at «%s»", url)
     extension = os.path.splitext(url)[-1]
     cur_try = 1
     max_try = 5
     response = None
 
-    # TODO : Handle cases were urlopen doesn't throw error but the result isn't
-    #        200
+    # TODO : Handle cases where urlopen doesn't throw error but the result
+    #        isn't 200
     while cur_try <= max_try and response is None:
         try:
             response = requests.get(url, timeout=TIMEOUT, stream=True)
@@ -49,28 +48,23 @@ def download(doc_msg):
             # Handle timeout error separately
             if cur_try < max_try:
                 cur_try += 1
-                logger.warning(u"Timeout occurred while downloading document "
-                               u"«{url}». Retry ({cur_try}/{max_try})".
-                               format(url=url,
-                                      cur_try=cur_try,
-                                      max_try=max_try))
+                logger.warning("Timeout occurred while downloading document "
+                               "«%s». Retry (%s/%s)", url, cur_try, max_try)
             else:
-                logger.error(u"Could not download document «{url}»".
-                             format(url=url))
+                logger.error("Could not download document «%s»", url)
                 raise DownloadError(error)
         except requests.exceptions.RequestException as error:
-            logger.error(u"Could not download document «{url}»".
-                         format(url=url))
+            logger.error("Could not download document «%s»", url)
             raise DownloadError(error)
 
-    with NamedTemporaryFile(mode='w+',
+    with NamedTemporaryFile(mode='w+b',
                             suffix=extension,
                             delete=False) as destination:
         for chunk in response.iter_content(CHUNK_SIZE):
             destination.write(chunk)
     doc = Document(url=url, path=destination.name)
-    logger.info(u"Download of URL «{url}» complete".format(url=doc.url))
-    logger.debug(u"Local copy name is : «{fn}»".format(fn=doc.local_path))
+    logger.info("Download of URL «%s» complete", doc.url)
+    logger.debug("Local copy name is : «%s»", doc.local_path)
     return doc
 
 
@@ -84,10 +78,9 @@ def upload(doc):
               should be used to download the uploaded file.
     """
     logger = getLogger(__name__)
-    logger.info(u"Uploading document to remote URL «{url}»".
-                format(url=doc.url))
-    logger.debug(u"Uploading «{doc}» to remote URL «{url}»".
-                 format(doc=doc.local_path, url=doc.url))
+    logger.info("Uploading document to remote URL «%s»", doc.url)
+    logger.debug("Uploading «%s» to remote URL «%s»", doc.local_path,
+                 doc.url)
 
     file_handle = open(doc.local_path, 'rb')
     headers = {'Content-Type': 'application/octet-stream'}
@@ -111,9 +104,8 @@ def upload(doc):
                 upload_url = json_struct['upload_url']
                 storage_doc_id = json_struct['storage_doc_id']
 
-                logger.info(u"Retrieved an upload temporary url for document "
-                            u"«{id}» : «{url}»"
-                            .format(url=upload_url, id=storage_doc_id))
+                logger.info("Retrieved an upload temporary url for document "
+                            "«%s» : «%s»", upload_url, storage_doc_id)
 
             result = requests.put(upload_url,
                                   headers=headers,
@@ -125,27 +117,22 @@ def upload(doc):
             # Handle timeout error separately
             if cur_try < max_try:
                 cur_try += 1
-                logger.warning(u"Timeout occurred while uploading document to "
-                               u"«{url}». Retry ({cur_try}/{max_try})".
-                               format(url=doc.url,
-                                      cur_try=cur_try,
-                                      max_try=max_try))
+                logger.warning("Timeout occurred while uploading document to "
+                               "«%s». Retry (%s/%s)",
+                               doc.url, cur_try, max_try)
             else:
-                logger.error(u"Could not upload document to «{url}»".
-                             format(url=doc.url))
+                logger.error("Could not upload document to «%s»", doc.url)
                 raise UploadError(error)
 
         except requests.exceptions.RequestException as error:
-            logger.error(u"Could not upload document to «{url}»".
-                         format(url=doc.url))
+            logger.error("Could not upload document to «%s»", doc.url)
             raise UploadError(error)
 
     if result.status_code != requests.codes.ok:
         result.raise_for_status()
 
-    logger.info(u"Upload to «{url}» complete, "
-                u"document can be retrieved with id «{id}»".
-                format(url=upload_url, id=storage_doc_id))
+    logger.info("Upload to «%s» complete, document can be retrieved with id "
+                "«%s»", upload_url, storage_doc_id)
 
     doc.url = storage_doc_id
 
@@ -160,5 +147,5 @@ def cleanup(doc):
     """
     logger = getLogger(__name__)
     if doc.local_path:
-        logger.debug(u"Removing local copy «{fn}»".format(fn=doc))
+        logger.debug("Removing local copy «%s»", doc)
         os.remove(doc.local_path)

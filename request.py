@@ -52,13 +52,13 @@ class Request(object):
         self.body = body
         self.type = self.body['service']['type']
         self.logger = logging.getLogger(__name__)
-        self.logger.info(u"Handling task")
+        self.logger.info("Handling task")
         doc = self.body['service']['document']
         self.host = getfqdn()
         self.misc = self.body['service']['misc']
 
         if required_args:
-            for required_arg in required_args.keys():
+            for required_arg in list(required_args.keys()):
                 if not self.misc or required_arg not in self.misc:
                     raise MissingArgumentError(
                         'No URL supplied for : {0}'.
@@ -78,8 +78,8 @@ class Request(object):
         :param progress: Progress value between 0 and 100.
         :type progress: int
         """
-        self.logger.debug(u"Setting progress to value {0}".format(progress))
-        if type(progress) != int:
+        self.logger.debug("Setting progress to value %s", progress)
+        if not isinstance(progress, int):
             raise TypeError("Progress must be expressed as an int")
         if progress < 0 or 100 < progress:
             raise ValueError("Progress must be between 0 and 100")
@@ -94,7 +94,7 @@ class Request(object):
                     'type': self.type}
             self.task_handler.update_state(state='PROGRESS', meta=meta)
         else:
-            self.logger.warning(u"Could not set progress at back-end")
+            self.logger.warning("Could not set progress at back-end")
 
     def store_annotations(self, annotations):
         """
@@ -116,15 +116,15 @@ class Request(object):
                     'type': self.type}
             self.task_handler.update_state(state='STORING', meta=meta)
         else:
-            self.logger.warning(u"Could not set custom state STORING at"
-                                u" back-end")
+            self.logger.warning("Could not set custom state STORING at"
+                                " back-end")
 
         if not self.ann_srv_url:
-            self.logger.warning(u"Not submitting annotations to a null URL")
+            self.logger.warning("Not submitting annotations to a null URL")
             return
 
         if not self.annotations:
-            self.logger.warning(u"Not submitting empty annotations")
+            self.logger.warning("Not submitting empty annotations")
             return
 
         submit_annotations(self.ann_srv_url,
@@ -135,7 +135,6 @@ class Request(object):
         Destructor method for cleanup purposes.
         """
         if self.document:
-            self.logger.info(u"Destroying local document copy of «{0}» =>"
-                             u" «{1}»".
-                             format(self.document, self.document.local_path))
+            self.logger.info("Destroying local document copy of «%s» =>"
+                             " «%s»", self.document, self.document.local_path)
             RemoteAccess.cleanup(self.document)

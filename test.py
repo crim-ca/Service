@@ -30,8 +30,8 @@ class TestUtilities(unittest.TestCase):
         some_url = 'http://www.crim.ca'
         some_path = __file__
         doc = Document.Document(url=some_url, path=some_path)
-        self.assertEquals(doc.url, some_url)
-        self.assertEquals(doc.local_path, some_path)
+        self.assertEqual(doc.url, some_url)
+        self.assertEqual(doc.local_path, some_path)
 
     def test_blank_message_creation(self):
         """

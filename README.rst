@@ -1,8 +1,3 @@
-=======
-Service
-=======
-
-
 This package offers helper modules for services working in a distributed
 Service architecture. The work being executed by these services might be an
 annotation process or a form of conversion process taking a significant amount
@@ -11,18 +6,11 @@ interface.
 
 Messages are communicated through a Celery distributed processing queue system.
 
--------
-LICENSE
--------
-
-see https://github.com/crim-ca/Service/tree/master/THIRD_PARTY_LICENSES.rst
-
-------------
-Installation
-------------
+Requirements / installation
+---------------------------
 
 The class was developed on/for Scientific Linux release 6.4 (Carbon) though it
-should work with most recent Linux distributions. It was tested for CentOS 6.4.
+should work with most recent Linux distributions.
 
 The main interface uses Python version 2.x.x .
 

@@ -31,10 +31,9 @@ def submit_annotations(ann_srv_url, annotations):
     :type annotations: list
     """
     logger = logging.getLogger(__name__)
-    logger.info(u"Submitting annotations to target {url}".
-                format(url=ann_srv_url))
+    logger.info("Submitting annotations to target %s", ann_srv_url)
 
-    if type(annotations) != list:
+    if not isinstance(annotations, list):
         raise InvalidAnnotationFormat("Annotations should be an object of type"
                                       " «list»")
 
@@ -48,12 +47,11 @@ def submit_annotations(ann_srv_url, annotations):
     headers = {'content-type': 'application/json',
                'accept': 'application/json'}
 
-    logger.debug(u"Upload URL is «{0}»".format(ann_srv_url))
-    logger.debug(u"Submitted data is {0}".format(payload))
+    logger.debug("Upload URL is «%s»", ann_srv_url)
+    logger.debug("Submitted data is %s", payload)
 
     while cur_try <= max_tries and not result:
-        logger.debug(u"Trying HTTP POST request {0}/{1}".
-                     format(cur_try, max_tries))
+        logger.debug("Trying HTTP POST request %s/%s", cur_try, max_tries)
 
         try:
             result = requests.post(ann_srv_url,
@@ -62,28 +60,23 @@ def submit_annotations(ann_srv_url, annotations):
                                    headers=headers)
 
             if result.status_code not in [200, 201, 204]:
-                logger.error(u"Got following code : {0}".
-                             format(result.status_code))
+                logger.error("Got following code : %s", result.status_code)
                 result.raise_for_status()
 
         except requests.exceptions.Timeout as error:
             # Handle timeout error separately
             if cur_try < max_tries:
                 cur_try += 1
-                logger.debug(u"Current try : {0}".format(cur_try))
-                logger.warning(u"Timeout occurred while uploading document to "
-                               u"«{url}». Retry ({cur_try}/{max_tries})".
-                               format(url=ann_srv_url,
-                                      cur_try=cur_try,
-                                      max_tries=max_tries))
+                logger.debug("Current try : %s", cur_try)
+                logger.warning("Timeout occurred while uploading document to "
+                               "«%s». Retry (%s/%s)",
+                               ann_srv_url, cur_try, max_tries)
             else:
-                logger.error(u"Could not upload document to «{url}»".
-                             format(url=ann_srv_url))
+                logger.error("Could not upload document to «%s»", ann_srv_url)
                 raise UploadError(error)
 
         except requests.exceptions.RequestException as error:
-            logger.error(u"Could not upload document to «{url}»".
-                         format(url=ann_srv_url))
+            logger.error("Could not upload document to «%s»", ann_srv_url)
             raise UploadError(error)
 
 

@@ -35,13 +35,14 @@ class WorkerExceptionWrapper(Exception):
         Build worker Exception wrapper instance.
 
         >>> w = WorkerExceptionWrapper('abcd1234', 'status',
-        >>>                            u'«This is a test»', 'traceback')
+        >>>                            '«This is a test»', 'traceback')
         """
+        logger = logging.getLogger(__name__)
         self.task_uuid = task_uuid
         self.task_status = task_status
         self.worker_exception = worker_exception
         self.worker_exc_traceback = worker_exc_traceback
-        w_e_msg = unicode(worker_exception).encode(ENCODING)
+        w_e_msg = str(worker_exception).encode(ENCODING)
         super(WorkerExceptionWrapper, self).__init__(w_e_msg)
 
 
@@ -68,10 +69,9 @@ def send_task_request(url,
     msg['service']['type'] = name
     msg['annotation_service']['url'] = ann_srv_url
 
-    async_result = app.send_task('worker.{0}'.format(name),
-                                 args=(msg,))
-    logger.info(u"Sent message {msg}".format(msg=msg))
-    return async_result
+    result = app.send_task('worker.{0}'.format(name), args=(msg,))
+    logger.info("Sent message %s", msg)
+    return result
 
 
 def get_request_info(uuid, app):
@@ -87,7 +87,7 @@ def get_request_info(uuid, app):
     # so it must be checked at a higher level if we don't want to tell user
     # that a task is pending even if it doesn't exist.
 
-    logger.info(u"Obtaining information for task {id}".format(id=uuid))
+    logger.info("Obtaining information for task %s", uuid)
     async_result = app.AsyncResult(id=uuid)
     status = async_result.state
     result = async_result.result
@@ -97,7 +97,7 @@ def get_request_info(uuid, app):
     # For the moment I cannot validate the returned result for
     # RECEIVED and STARTED so force a None value as it's what
     # should be returned anyway
-    logger.info(u"Task has status {st}".format(st=status))
+    logger.info("Task has status %s", status)
     if status == 'RECEIVED' or status == 'STARTED':
         result = None
 
@@ -129,7 +129,7 @@ def cancel_request(uuid, app):
     :param app: Handle to the Celery application.
     """
     logger = logging.getLogger(__name__)
-    logger.info(u"Issuing a revoke command for task {id}".format(id=uuid))
+    logger.info("Issuing a revoke command for task %s", uuid)
     app.control.revoke(uuid, terminate=True, signal='SIGKILL')
 
 
@@ -187,7 +187,7 @@ def main():
 
     res = send_task_request(document_url, process_name, app)
     logger = logging.getLogger(__name__)
-    logger.info(u"Waiting for results...")
+    logger.info("Waiting for results...")
     results = res.get()
     print "Results: {r}".format(r=results)
 

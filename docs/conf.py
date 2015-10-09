@@ -1,4 +1,19 @@
 # -*- coding: utf-8 -*-
+# == MOCK START ==
+import sys
+from mock import Mock as MagicMock
+
+class Mock(MagicMock):
+    __all__ = []
+    @classmethod
+    def __getattr__(cls, name):
+        return Mock()
+
+MOCK_MODULES = ["celery","socket","tempfile","imp","json","requests"]
+sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
+
+# == MOCK End ==
+# -*- coding: utf-8 -*-
 #
 # Service_Worker documentation build configuration file, created by
 # sphinx-quickstart on Fri Apr 25 14:42:04 2014.
@@ -16,9 +31,9 @@ import sys, os
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('../..'))
 
-from .__meta__ import VERSION
+from Service.__meta__ import VERSION
 
 # -- General configuration -----------------------------------------------------
 
@@ -42,8 +57,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Service_Worker'
-copyright = u'2014, CRIM'
+project = 'Service_Worker'
+copyright = '2014, CRIM'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -185,8 +200,8 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'Service_Worker.tex', u'Service\\_Worker Documentation',
-   u'CRIM', 'manual'),
+  ('index', 'Service_Worker.tex', 'Service\\_Worker Documentation',
+   'CRIM', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -215,8 +230,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'service_worker', u'Service_Worker Documentation',
-     [u'CRIM'], 1)
+    ('index', 'service_worker', 'Service_Worker Documentation',
+     ['CRIM'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -229,8 +244,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'Service_Worker', u'Service_Worker Documentation',
-   u'CRIM', 'Service_Worker', 'One line description of project.',
+  ('index', 'Service_Worker', 'Service_Worker Documentation',
+   'CRIM', 'Service_Worker', 'One line description of project.',
    'Miscellaneous'),
 ]
 
