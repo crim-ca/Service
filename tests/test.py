@@ -10,8 +10,8 @@ import unittest
 import os
 
 # --Modules to test -----------------------------------------------------------
-from . import Document
-from . import Message
+from Service import Document
+from Service import Message
 
 CURRENT_DIR = os.path.dirname(__file__)
 TEST_DOC_DURATION = 19.9375
