@@ -7,7 +7,7 @@ Essentially a service can be seen as a program which can process input data and 
 
 Celery is a Python library. The only current implementation of Celery is in fact in Python. This currently limits the development of Vesta Services to the Python language. Nonetheless, Python can be integrated to a number of other languages through foreign interface calls such as `CFFI <https://cffi.readthedocs.org/en/latest/>`_ or more native approaches such as `ctypes <https://docs.python.org/2/library/ctypes.html>`_ for C and C++ calls, `swig <http://www.swig.org/>`_ wrappers for multi-language bindings, `Jython <http://www.jython.org/>`_ for Java code, `IronPython <http://ironpython.net/>`_ for .NET programs and so forth. Another valid approach is simply by forking subprocesses and wrapping an existing program. With this in mind one can seek integration mechanisms to expose one's existing code base in another language to the Python Vesta and Celery wrapper without many challenges.
 
-The Vesta Service wrapper package is available online on github at the following address: https://github.com/crim-ca/Service .  This wrapper is a Python package which is not intended as a standalone deployment (there is no setup.py file). Rather, one is meant to clone this package in a code base which will use relative imports to access the functionality provided by this package and use whichever method one desires to package and distribute the resulting application (Python *.whl* file, Docker image, etc.)
+The Vesta Service wrapper package is available online on github at the following address: https://github.com/crim-ca/Service .  This wrapper is a Python package which can be used as a standalone deployment (using the setup.py file) or can be simply used by cloning this package in a code base which will use relative imports to access the functionality provided by this package and use whichever method one desires to package and distribute the resulting application (Python *.whl* file, Docker image, etc.)
 
 Using and starting the service is done through the `Celery application interface <http://docs.celeryproject.org/en/latest/getting-started/first-steps-with-celery.html#application>`_ for which the Vesta infrastructures sets a certain number of norms. These are the following:
 
@@ -37,7 +37,7 @@ Consider the following example:
 
    # --Project specific----------------------------------------------------------
    from .my_module import my_function
-   from .Service.request import Request  # Use Vesta Service wrapper
+   from Service.request import Request  # Use Vesta Service wrapper
 
    # --3rd party modules----------------------------------------------------------
    from celery.utils.log import get_task_logger  # Obtain task logger from Celery
