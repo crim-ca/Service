@@ -34,10 +34,10 @@ class WorkerExceptionWrapper(Exception):
         """
         Build worker Exception wrapper instance.
 
-        >>> w = WorkerExceptionWrapper('abcd1234', 'status',
-        >>>                            '«This is a test»', 'traceback')
+        >>> w = WorkerExceptionWrapper('abcd1234', 'status',\
+                                       'This is a test', 'traceback')
+
         """
-        logger = logging.getLogger(__name__)
         self.task_uuid = task_uuid
         self.task_status = task_status
         self.worker_exception = worker_exception
@@ -49,7 +49,7 @@ class WorkerExceptionWrapper(Exception):
 def send_task_request(url,
                       name,
                       app,
-                      misc=None,
+                      misc={},
                       ann_srv_url=None):
     """
     Send a request for a process on URL.
@@ -57,9 +57,9 @@ def send_task_request(url,
     :param url: URL of the file to process
     :param name: Name of the process.
     :param app: Handle to the Celery application.
-    :param misc: Optional data that can be passed to a celery worker
+    :param misc: Optional data that can be passed to a celery worker.
     :param ann_srv_url: URL to where the final annotations will be stored.
-    :returns: Instance of celery.result.AsyncResult
+    :returns: Instance of :py:class:`celery.result.AsyncResult`
     """
     logger = logging.getLogger(__name__)
     # The message to send on the queue.
@@ -69,8 +69,12 @@ def send_task_request(url,
     msg['service']['type'] = name
     msg['annotation_service']['url'] = ann_srv_url
 
-    result = app.send_task('worker.{0}'.format(name), args=(msg,))
-    logger.info("Sent message %s", msg)
+    logger.debug("Celery App is : {}".format(app))
+    
+    task_name = '{}.{}'.format(app.main, name)
+    logger.debug("Using task name {}".format(task_name))
+    result = app.send_task(task_name, args=(msg,))
+    logger.info(u"Sent message {msg}".format(msg=msg))
     return result
 
 

@@ -39,7 +39,7 @@ class Request(object):
     ann_srv_url = None
     annotations = None
 
-    def __init__(self, body, task_handler, required_args=None):
+    def __init__(self, body, task_handler, required_args=None, download=True):
         """
         Constructor.
 
@@ -48,11 +48,13 @@ class Request(object):
         :param required_args: Required argments in 'misc', expressed as a dict
                               where the key is the name of the arg and the
                               value is a description of it's use.
+        :param download: Automatically download document (default=True).
         """
         self.body = body
         self.type = self.body['service']['type']
         self.logger = logging.getLogger(__name__)
         self.logger.info("Handling task")
+        self.logger.debug("Body has contents {}".format(body))
         doc = self.body['service']['document']
         self.host = getfqdn()
         self.misc = self.body['service']['misc']
@@ -67,7 +69,12 @@ class Request(object):
         self.url = doc['url']
         self.ann_srv_url = self.body['annotation_service']['url']
 
-        self.document = RemoteAccess.download(doc)
+        if download:
+            self.document = RemoteAccess.download(doc)
+        else:
+            self.logger.warning("Choosing NOT to download source document {}".
+                                format(doc))
+
         self.task_handler = task_handler
         self.start_time = datetime.now().strftime(DATETIME_FORMAT)
 
@@ -98,14 +105,14 @@ class Request(object):
 
     def store_annotations(self, annotations):
         """
-        Store the annotations on an Annotation Storage Service (ASS) if the
-        ASS's URL was specified in the request body and the annotation has a
+        Store the annotations on an Annotation Storage Service (JASS) if the
+        JASS's URL was specified in the request body and the annotation has a
         valid result (not Null).
 
         Creates a transitory state which is called STORING which can be used to
-        debug a hanging call to the ASS.
+        debug a hanging call to the JASS.
 
-        :param annotations: Actual annotations to send to the ASS.
+        :param annotations: Actual annotations to send to the JASS.
         """
         self.annotations = annotations
 
@@ -135,6 +142,6 @@ class Request(object):
         Destructor method for cleanup purposes.
         """
         if self.document:
-            self.logger.info("Destroying local document copy of «%s» =>"
-                             " «%s»", self.document, self.document.local_path)
+            self.logger.info("Destroying local document copy of %s =>"
+                             " %s", self.document, self.document.local_path)
             RemoteAccess.cleanup(self.document)

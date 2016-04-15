@@ -4,15 +4,14 @@ annotation process or a form of conversion process taking a significant amount
 of time thereby benefiting from a distributed processing system with a REST
 interface.
 
-Messages are communicated through a Celery distributed processing queue system.
+Messages are communicated through a `Celery <http://www.celeryproject.org/>`_
+distributed processing queue system. Celery can be configured to run with
+various backends such as RabbitMQ or Reddis.
 
 Requirements / installation
 ---------------------------
 
-The class was developed on/for Scientific Linux release 6.4 (Carbon) though it
-should work with most recent Linux distributions.
-
-The main interface uses Python version 2.x.x .
+This package uses Python version 2.x.x .
 
 Python requirements are in file «requirements.txt» and can be installed with
 the following command::
@@ -22,4 +21,6 @@ the following command::
 This package is meant to be used in-place, meaning it does offer an
 installation procedure to be used as a standalone distribution. When creating a
 new project, simply clone this package in your source tree and refer to the
-proper package with the Python *import* statement.
+proper package with the Python *import* statement. Furthermore, care should be
+taken to include the requirements into one's installation procedure. e.g.
+setup.py .

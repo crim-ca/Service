@@ -4,7 +4,7 @@
 """
 The purpose of this module is to encapsulate all the necessary code to submit
 an annotation storage request. It is adapted to the Annotations Storage Service
-developped for the CANARIE / Vesta project by CRIM.
+(JASS) developed for the CANARIE / Vesta project by CRIM.
 """
 
 # Standard library requirements ----------------------------------------------
@@ -35,7 +35,7 @@ def submit_annotations(ann_srv_url, annotations):
 
     if not isinstance(annotations, list):
         raise InvalidAnnotationFormat("Annotations should be an object of type"
-                                      " «list»")
+                                      " list")
 
     cur_try = 1
     max_tries = 5
@@ -47,7 +47,7 @@ def submit_annotations(ann_srv_url, annotations):
     headers = {'content-type': 'application/json',
                'accept': 'application/json'}
 
-    logger.debug("Upload URL is «%s»", ann_srv_url)
+    logger.debug("Upload URL is %s", ann_srv_url)
     logger.debug("Submitted data is %s", payload)
 
     while cur_try <= max_tries and not result:
@@ -69,20 +69,20 @@ def submit_annotations(ann_srv_url, annotations):
                 cur_try += 1
                 logger.debug("Current try : %s", cur_try)
                 logger.warning("Timeout occurred while uploading document to "
-                               "«%s». Retry (%s/%s)",
+                               "%s. Retry (%s/%s)",
                                ann_srv_url, cur_try, max_tries)
             else:
-                logger.error("Could not upload document to «%s»", ann_srv_url)
+                logger.error("Could not upload document to %s", ann_srv_url)
                 raise UploadError(error)
 
         except requests.exceptions.RequestException as error:
-            logger.error("Could not upload document to «%s»", ann_srv_url)
+            logger.error("Could not upload document to %s", ann_srv_url)
             raise UploadError(error)
 
 
 def main():
     """
-    Command line entry point.
+    Command line entry point to test upload of annotations.
     """
     logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
                         level=logging.DEBUG)

@@ -2,8 +2,7 @@
 # coding:utf-8
 
 """
-This module offers the downloading entry point for annotation services working
-on a AMQP.
+This module offers the downloading entry point for a given remote ressource..
 """
 
 # -- Standard library --------------------------------------------------------
