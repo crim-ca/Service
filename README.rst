@@ -14,17 +14,19 @@ Requirements / installation
 
 This package uses Python version 2.x.x but should be compatible with Py3K.
 
+This package can be used in-place, by simply cloning this package in your
+source tree and refering to the proper package with the Python *import*
+statement.
+
 Python requirements are in file «requirements.txt» and can be installed with
 the following command::
 
     pip install -r requirements.pip
 
-This package can be used in-place, by simply cloning this package in your
-source tree and refer to the proper package with the Python *import* statement.
-In such a case, care should be taken to include the requirements into one's
+Furthermore, care should be taken to include the requirements into one's
 installation procedure. e.g. setup.py .
 
-Alternatively one can simply use this package's installation procedure such
+Alternatively, one can simply use this package's installation procedure such
 as::
 
    pip install git+https://github.com/crim-ca/Service
