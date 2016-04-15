@@ -7,19 +7,16 @@ Documentation for service helper package
 ========================================
 
 .. include:: ../README.rst
+.. include:: user_guide.rst
 
-Code documentation:
+Code documentation
+==================
 
 .. toctree::
    :maxdepth: 2
+   :glob:
 
-   annotations_dispatcher
-   Document
-   Message
-   RemoteAccess
-   request_process_mesg
-   request
-   exceptions
+   src/*
 
 Indices and tables
 ==================
@@ -27,4 +24,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
