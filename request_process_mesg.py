@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # coding:utf-8
 
 """
@@ -70,7 +69,7 @@ def send_task_request(url,
     msg['annotation_service']['url'] = ann_srv_url
 
     logger.debug("Celery App is : {}".format(app))
-    
+
     task_name = '{}.{}'.format(app.main, name)
     logger.debug("Using task name {}".format(task_name))
     result = app.send_task(task_name, args=(msg,))

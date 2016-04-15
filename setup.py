@@ -65,5 +65,7 @@ setup(
     tests_require=TEST_REQUIREMENTS,
 
     # -- script entry points -----------------------------------------------
-    # entry_points={'console_scripts': [ ]}
+    entry_points={'console_scripts':
+                  ["send_annotation=Service.annotations_dispatcher:main",
+                   "send_request=Service.request_process_mesg:main"]}
 )

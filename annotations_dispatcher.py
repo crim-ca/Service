@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # coding:utf-8
 
 """
@@ -87,16 +86,17 @@ def main():
     logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
                         level=logging.DEBUG)
 
-    usage = '%prog storage_service_url'
+    usage = '%prog storage_service_url annotation'
     parser = optparse.OptionParser(usage=usage)
 
     args = parser.parse_args()[-1]
 
-    if len(args) != 1:
+    if len(args) != 2:
         parser.error("Insufficient arguments")
 
     url = args[0]
-    submit_annotations(url, [{'a': 2}, {'a': 1}])
+    annotation = args[1]
+    submit_annotations(url, annotation)
 
 if __name__ == '__main__':
     main()
