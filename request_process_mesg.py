@@ -192,7 +192,7 @@ def main():
     logger = logging.getLogger(__name__)
     logger.info("Waiting for results...")
     results = res.get()
-    print "Results: {r}".format(r=results)
+    print("Results: {r}".format(r=results))
 
 if __name__ == '__main__':
     main()
