@@ -31,7 +31,7 @@ TEST_REQUIREMENTS = [
 
 setup(
     # -- meta information --------------------------------------------------
-    name='Service',
+    name='VestaService',
     version=__version__,
     description="Code to facilitate creation of services and their "
                 "integration to Vesta Service Gateway.",
@@ -58,9 +58,9 @@ setup(
 
     # -- Package structure -------------------------------------------------
     packages=[
-        'Service'
+        'VestaService'
     ],
-    package_dir={'Service': '.'},
+    package_dir={'VestaService': '.'},
     include_package_data=True,
     install_requires=REQUIREMENTS,
     zip_safe=False,
@@ -71,6 +71,6 @@ setup(
 
     # -- script entry points -----------------------------------------------
     entry_points={'console_scripts':
-                  ["send_annotation=Service.annotations_dispatcher:main",
-                   "send_request=Service.request_process_mesg:main"]}
+                  ["send_annotation=VestaService.annotations_dispatcher:main",
+                   "send_request=VestaService.request_process_mesg:main"]}
 )

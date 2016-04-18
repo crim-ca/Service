@@ -1,6 +1,6 @@
 Annotations dispatcher module
 =============================
 
-.. automodule:: Service.annotations_dispatcher
+.. automodule:: VestaService.annotations_dispatcher
    :members:
  

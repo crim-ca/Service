@@ -37,7 +37,7 @@ Consider the following example:
 
    # --Project specific----------------------------------------------------------
    from .my_module import my_function
-   from Service.request import Request  # Use Vesta Service wrapper
+   from VestaService.request import Request  # Use Vesta Service wrapper
 
    # --3rd party modules----------------------------------------------------------
    from celery.utils.log import get_task_logger  # Obtain task logger from Celery

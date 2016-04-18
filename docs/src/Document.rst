@@ -1,7 +1,7 @@
 Document information wrapper module
 ===================================
 
-.. automodule:: Service.Document
+.. automodule:: VestaService.Document
    :members:
  
  

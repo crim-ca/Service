@@ -1,7 +1,7 @@
 Message composition module
 ==========================
 
-.. automodule:: Service.Message
+.. automodule:: VestaService.Message
    :members:
  
  

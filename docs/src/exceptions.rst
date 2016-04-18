@@ -1,7 +1,7 @@
-Service exceptions module
-=========================
+VestaService exceptions module
+==============================
 
-.. automodule:: Service.service_exceptions
+.. automodule:: VestaService.service_exceptions
    :members:
  
  

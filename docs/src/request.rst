@@ -1,7 +1,7 @@
 Request handling module
 =======================
 
-.. automodule:: Service.request
+.. automodule:: VestaService.request
    :members:
  
  

@@ -1,7 +1,7 @@
 Request dispatching module
 ==========================
 
-.. automodule:: Service.request_process_mesg
+.. automodule:: VestaService.request_process_mesg
    :members:
  
  

@@ -1,7 +1,7 @@
 Remote upload and download module
 =================================
 
-.. automodule:: Service.RemoteAccess
+.. automodule:: VestaService.RemoteAccess
    :members:
  
  
