@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
+
 
 try:
     from setuptools import setup
@@ -12,8 +14,11 @@ from __meta__ import __version__, __author__, __email__
 with open('README.rst') as readme_file:
     README = readme_file.read()
 
-with open('HISTORY.rst') as history_file:
-    HISTORY = history_file.read().replace('.. :changelog:', '')
+if os.path.exists("HISTORY.rst"):
+    with open('HISTORY.rst') as history_file:
+        HISTORY = history_file.read().replace('.. :changelog:', '')
+else:
+    HISTORY = ""
 
 REQUIREMENTS = [
     "celery==3.1.19",
