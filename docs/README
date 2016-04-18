@@ -7,3 +7,5 @@ activate script such as:
 Then, from this directory, issue the command:
 
    make html
+
+See file user_guide.rst for developer / user information for this package.   
