@@ -21,7 +21,7 @@ statement.
 Python requirements are in file «requirements.txt» and can be installed with
 the following command::
 
-    pip install -r requirements.pip
+    pip install -r requirements.txt
 
 Furthermore, care should be taken to include the requirements into one's
 installation procedure. e.g. setup.py .
