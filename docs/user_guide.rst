@@ -68,7 +68,7 @@ Consider the following example:
        request.process_version = '0.1.2'  # Inject version number.
 
        # Launch the processing on downloaded local copy of document.
-	   annotations = my_function(request.document, request.set_progress)
+       annotations = my_function(request.document, request.set_progress)
 
        # Optional : Send annotations to a JASS.
        request.store_annotations(annotations)
