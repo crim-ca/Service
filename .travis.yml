@@ -9,7 +9,7 @@ env:
 
 install:
   - pip install -U tox
-  - pip install -e .  
+  - pip install -e .
 
 script:
   - tox

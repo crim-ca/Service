@@ -9,7 +9,7 @@ try:
 except ImportError:
     from distutils.core import setup
 
-from __meta__ import __version__, __author__, __email__
+from VestaService.__meta__ import __version__, __author__, __email__
 
 with open('README.rst') as readme_file:
     README = readme_file.read()
@@ -60,7 +60,7 @@ setup(
     packages=[
         'VestaService'
     ],
-    package_dir={'VestaService': '.'},
+    package_dir={'VestaService': 'VestaService'},
     include_package_data=True,
     install_requires=REQUIREMENTS,
     zip_safe=False,
