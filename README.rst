@@ -1,3 +1,5 @@
+Build status: https://travis-ci.org/crim-ca/Service.svg?branch=master
+
 This package offers helper modules for Vesta services working in a distributed
 Service architecture. The work being executed by these services might be an
 annotation process or a form of conversion process taking a significant amount
