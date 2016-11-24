@@ -13,6 +13,9 @@ install:
 script:
   - tox
 
+notifications:
+  slack: crim-ca:A7jqt2VJWnPwN6A3AZXJ40gt
+
 # deploy:
 #   provider: pypi
 #   distributions: sdist
