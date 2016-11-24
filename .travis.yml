@@ -16,7 +16,7 @@ script:
 # deploy:
 #   provider: pypi
 #   distributions: sdist
-#   user: www-crim-ca-devs
+#   user: crim-ca
 #   password:
 #     secure: PLEASE_REPLACE_ME
 #   on:
