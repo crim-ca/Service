@@ -16,6 +16,10 @@ from .annotations_dispatcher import submit_annotations
 from .service_exceptions import MissingArgumentError
 from . import RemoteAccess
 
+# -- third-party --------------------------------------------------------------
+from celery.signals import task_postrun
+from requests import post
+
 # -- Configuration ------------------------------------------------------------
 DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
 THIS_DIR = os.path.dirname(__file__)
@@ -38,6 +42,7 @@ class Request(object):
     process_version = None
     ann_srv_url = None
     annotations = None
+    callback_url = None
 
     def __init__(self, body, task_handler, required_args=None, download=True):
         """
@@ -54,7 +59,7 @@ class Request(object):
         self.type = self.body['service']['type']
         self.logger = logging.getLogger(__name__)
         self.logger.info("Handling task")
-        self.logger.debug("Body has contents {}".format(body))
+        self.logger.debug("Body has contents %s", body)
         doc = self.body['service']['document']
         self.host = getfqdn()
         self.misc = self.body['service']['misc']
@@ -72,11 +77,30 @@ class Request(object):
         if download:
             self.document = RemoteAccess.download(doc)
         else:
-            self.logger.warning("Choosing NOT to download source document {}".
-                                format(doc))
+            self.logger.warning("Choosing NOT to download source document %s",
+                                doc)
 
         self.task_handler = task_handler
         self.start_time = datetime.now().strftime(DATETIME_FORMAT)
+
+        self.callback_url = self.misc.get('callback_url', None)
+
+    @task_postrun.connect
+    def postrun_handler(self, task_id, task_state):
+        """
+        This function will call a caller-supplied callback URL when the
+        processing finishes.
+
+        :param task_state: State of the task upon completion.
+        :param task_id: UUID of the task.
+        """
+        if self.callback_url:
+            payload = {'uuid': task_id,
+                       'status': task_state}
+            self.logger.info("Posting callback with contents %s at %s",
+                             payload, self.callback_url)
+            res = post(self.callback_url, data=payload)
+            res.raise_for_status()
 
     def set_progress(self, progress):
         """
