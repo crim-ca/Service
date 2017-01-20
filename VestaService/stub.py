@@ -24,7 +24,7 @@ def process_stub(args):
     :param args: Random arguments which will be returned to caller.
     :returns: Result as produced by :py:func:`.detect.score_copies` .
     """
-    logger = get_task_logger(__name__.split('.')[0])
+    logger = get_task_logger(__name__)
     logger.info("Got request to process %s", args)
     duration = .1
     logger.info("Sleeping for %s", duration)
