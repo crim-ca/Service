@@ -22,7 +22,9 @@ def process_stub(args):
     useful for testing.
 
     :param args: Random arguments which will be returned to caller.
-    :returns: Result as produced by :py:func:`.detect.score_copies` .
+    :returns: Dictionary structure with two keys:
+       :type: Contains a single value string : "Useless"
+       :value: Contains the args passed by caller.
     """
     logger = get_task_logger(__name__)
     logger.info("Got request to process %s", args)
