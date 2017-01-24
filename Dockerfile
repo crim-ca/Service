@@ -6,6 +6,6 @@ RUN pip install /opt/local/src/VestaService/
 
 USER 1000
 
-CMD cp /opt/local/src/VestaService/celeryconfig.py /tmp
+CMD cp /opt/local/src/VestaService/celeryconfig.py /tmp/
 
 CMD celery worker -A VestaService.stub -l info -b amqp://guest@amqp/
