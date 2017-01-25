@@ -12,7 +12,7 @@ from time import sleep
 from celery.utils.log import get_task_logger
 from celery import Celery
 
-APP = Celery(__name__)
+APP = Celery('worker.stub')
 
 
 @APP.task
