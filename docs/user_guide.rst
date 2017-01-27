@@ -21,6 +21,8 @@ Using and starting the service is done through the `Celery application interface
       :local_document: A local file name which contains a local copy of the document.
       :url: The original URL from which the copy was obtained.
 
+   :callback_url: A field containing a URL to which the class will issue a POST request once the task has completed giving task ID and completion status.
+
 * Use of the Python logging interface is highly recommended so that distributed instances can produce logs to a centralised instance (Syslog for instance). Furthermore, Celery provides a task logger which injects contextual information for the task execution in the log messages. This is also highly recommended.
 * Resulting annotations in the context of the Vesta infrastructure uses `JSON-LD <http://json-ld.org/>`_ annotations format. Typically one can save the annotations to a `JASS : JSON-LD Annotations Storage System <http://services.vesta.crim.ca/docs/jass/latest/>`_ which might be deployed in the context of a given infrastructure. Care must be taken to define a valid JSON-LD schema and place a copy of that schema in a public HTTP repository and include a link to that schema within the produced annotations.
 
@@ -144,17 +146,15 @@ Will the previous two code elements, a service worker instance could be linked t
 
    # Broker settings ------------------------------------------------------------
    BROKER_URL = 'amqp://localhost//'
-   CELERY_RESULT_BACKEND = 'amqp://'
-   CELERY_TASK_RESULT_EXPIRES = 7200  # 2 hours.
+   CELERY_TASK_SERIALIZER = 'json'
+   CELERY_ACCEPT_CONTENT = ['json']
 
    # Result backend settings ----------------------------------------------------
-   CELERY_TASK_SERIALIZER = 'json'
+   CELERY_RESULT_BACKEND = 'rpc'
    CELERY_RESULT_SERIALIZER = 'json'
-   CELERY_ACCEPT_CONTENT = ['json']
 
    # Worker settings ------------------------------------------------------------
    CELERY_SEND_EVENTS = True
-   CELERYD_CONCURRENCY = 2
    CELERYD_PREFETCH_MULTIPLIER = 1
 
    # Logging settings -----------------------------------------------------------
@@ -172,5 +172,3 @@ Saved in a document named as *celeryconfig.py*, one could start the Service thro
    celery worker -A my_package.my_worker -l INFO -c 1 -E --config=celeryconfig -Q my_process
 
 This would start up the worker and listen for incoming tasks through Celery. See Celery documentation for more options. When calling the Service Gateway with an associated document, the Request class constructor would download the document and the resulting annotations would be sent back to the Gateway through Celery which could be accessed by the HTTP caller or fetched on the optional JASS backend.
-
-
