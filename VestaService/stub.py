@@ -15,10 +15,11 @@ from celery import Celery, current_task
 from .__meta__ import __version__ as __VERSION__
 from .request import Request
 
-APP = Celery(__name__)
+PROCESS_NAME = "worker.stub"
+APP = Celery(PROCESS_NAME)
 
 
-@APP.task
+@APP.task(name=PROCESS_NAME)
 def process_stub(args):
     """
     A celery process which does nothing but return supplied arguments, mostly
