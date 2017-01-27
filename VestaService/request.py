@@ -49,7 +49,7 @@ def postrun_handler(task_id, state, **kwargs):
         logger.info("Posting callback with contents %s at %s",
                     payload, CALLBACK_URL)
         try:
-            res = post(CALLBACK_URL, data=payload)
+            res = post(CALLBACK_URL, json=payload)
             res.raise_for_status()
         except HTTPError as exc:
             logger.error("Could not complete callback : %s", exc)
