@@ -17,12 +17,42 @@ from .service_exceptions import MissingArgumentError
 from . import RemoteAccess
 
 # -- third-party --------------------------------------------------------------
+from celery.utils.log import get_task_logger
+from requests.exceptions import HTTPError
 from celery.signals import task_postrun
 from requests import post
 
 # -- Configuration ------------------------------------------------------------
 DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
 THIS_DIR = os.path.dirname(__file__)
+
+CALLBACK_URL = None
+
+
+# Ideally this should be a method of the class Request and not potentially
+# share a global variable with other requests...
+# Also see :
+# http://stackoverflow.com/questions/12526606/callback-for-celery-apply-async
+@task_postrun.connect
+def postrun_handler(task_id, state, **kwargs):
+    """
+    This function will call a caller-supplied callback URL when the
+    celery processing finishes.
+
+    :param state: State of the task upon completion.
+    :param task_id: UUID of the task.
+    """
+    logger = get_task_logger(__name__)
+    if CALLBACK_URL:
+        payload = {'uuid': task_id,
+                   'status': state}
+        logger.info("Posting callback with contents %s at %s",
+                    payload, CALLBACK_URL)
+        try:
+            res = post(CALLBACK_URL, data=payload)
+            res.raise_for_status()
+        except HTTPError as exc:
+            logger.error("Could not complete callback : %s", exc)
 
 
 class Request(object):
@@ -83,24 +113,8 @@ class Request(object):
         self.task_handler = task_handler
         self.start_time = datetime.now().strftime(DATETIME_FORMAT)
 
-        self.callback_url = self.misc.get('callback_url', None)
-
-    @task_postrun.connect
-    def postrun_handler(self, task_id, task_state):
-        """
-        This function will call a caller-supplied callback URL when the
-        processing finishes.
-
-        :param task_state: State of the task upon completion.
-        :param task_id: UUID of the task.
-        """
-        if self.callback_url:
-            payload = {'uuid': task_id,
-                       'status': task_state}
-            self.logger.info("Posting callback with contents %s at %s",
-                             payload, self.callback_url)
-            res = post(self.callback_url, data=payload)
-            res.raise_for_status()
+        global CALLBACK_URL
+        CALLBACK_URL = self.misc.get('callback_url', None)
 
     def set_progress(self, progress):
         """
