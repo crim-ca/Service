@@ -4,8 +4,9 @@ Configuration values for worker processes.
 """
 
 # Broker settings ------------------------------------------------------------
-BROKER_URL = 'amqp://localhost//'
-CELERY_RESULT_BACKEND = 'amqp://'
+BROKER_URL = 'amqp://amqp'
+CELERY_RESULT_BACKEND = 'rpc://'
+CELERY_RESULT_PERSISTENT = False
 CELERY_TASK_RESULT_EXPIRES = 7200  # 2 hours.
 
 # Result backend settings ----------------------------------------------------
