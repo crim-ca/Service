@@ -1,6 +1,11 @@
 Release notes
 =============
 
+0.2.2
+-----
+
+* When sending a task, queue name must be given.
+
 0.2.1
 -----
 

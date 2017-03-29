@@ -48,6 +48,7 @@ class WorkerExceptionWrapper(Exception):
 def send_task_request(url,
                       name,
                       app,
+                      queue,
                       misc={},
                       ann_srv_url=None):
     """
@@ -56,6 +57,7 @@ def send_task_request(url,
     :param url: URL of the file to process
     :param name: Name of the process.
     :param app: Handle to the Celery application.
+    :param queue: AMQP Queue to which the MSG will be sent.
     :param misc: Optional data that can be passed to a celery worker.
     :param ann_srv_url: URL to where the final annotations will be stored.
     :returns: Instance of :py:class:`celery.result.AsyncResult`
@@ -64,16 +66,27 @@ def send_task_request(url,
     # The message to send on the queue.
     msg = Message.request_message_factory()
     msg['service']['document']['url'] = url
-    msg['service']['misc'] = misc
     msg['service']['type'] = name
+    msg['service']['misc'] = misc
     msg['annotation_service']['url'] = ann_srv_url
 
-    logger.debug("Celery App is : {}".format(app))
+    logger.debug("URL is %s", url)
+    logger.debug("Task name is %s", name)
+    logger.debug("Celery App is: %s", app)
+    logger.debug("Celery queue is: %s", queue)
+    logger.debug("misc structure is : %s", misc)
 
+    # TODO : This should be updated in the context of natural naming for Celery
+    # tasks...
     task_name = '{}.{}'.format(app.main, name)
-    logger.debug("Using task name {}".format(task_name))
-    result = app.send_task(task_name, args=(msg,))
-    logger.info(u"Sent message {msg}".format(msg=msg))
+    # See:
+    # http://docs.celeryproject.org/en/3.1/reference/celery.app.task.html#celery.app.task.Task.apply_async
+    # Explicitly give the queue name, otherwise Celery will use the
+    # CELERY_ROUTES configuration structure which reduces tasks routes to task
+    # names. Hence we respect here the configuration given to the application
+    # (VestaRestPackage ?).
+    result = app.send_task(task_name, queue=queue, args=(msg,))
+    logger.info("Sent message %s to queue %s", msg, queue)
     return result
 
 
