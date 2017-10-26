@@ -12,6 +12,9 @@ import os
 # --Modules to test -----------------------------------------------------------
 from VestaService import Document
 from VestaService import Message
+from VestaService import RemoteAccess
+
+from VestaService.service_exceptions import DownloadError
 
 CURRENT_DIR = os.path.dirname(__file__)
 TEST_DOC_DURATION = 19.9375
@@ -41,3 +44,28 @@ class TestUtilities(unittest.TestCase):
         self.assertTrue('request_time' in msg)
         self.assertTrue('service' in msg)
         self.assertTrue('annotation_service' in msg)
+
+    def test_download(self):
+        """
+        Check download function
+        """
+        MAX_TRY = 1
+
+        #Testing the error returned when the respons code != 200
+        doc_msg= {"url" : "http://www.crim.ca/page_inconnue"}
+        with self.assertRaises(DownloadError):
+            doc = RemoteAccess.download(doc_msg, max_try=MAX_TRY)
+
+        #Testing the size of the data written on the disk
+        doc_msg = {"url": "https://httpbin.org/stream-bytes/1024"}
+        doc = RemoteAccess.download(doc_msg, max_try=MAX_TRY)
+        self.assertEqual(os.stat(doc.local_path).st_size, 1024)
+        RemoteAccess.cleanup(doc)
+
+        doc_msg = {"url": "https://httpbin.org/bytes/1024"}
+        doc = RemoteAccess.download(doc_msg, max_try=MAX_TRY)
+        self.assertEqual(os.stat(doc.local_path).st_size, 1024)
+        RemoteAccess.cleanup(doc)
+
+if __name__ == '__main__':
+    unittest.main()

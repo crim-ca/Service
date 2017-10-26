@@ -10,6 +10,7 @@ services working on a AMQP.
 from tempfile import NamedTemporaryFile
 from logging import getLogger
 import os
+import shutil
 
 # --3rd party modules----------------------------------------------------------
 import requests
@@ -18,11 +19,10 @@ import requests
 from .service_exceptions import (DownloadError, UploadError)
 from .Document import Document
 
-CHUNK_SIZE = 16 * 1024
 TIMEOUT = 10
+MAX_TRY = 5
 
-
-def download(doc_msg):
+def download(doc_msg, timeout = TIMEOUT, max_try = MAX_TRY):
     """
     Download a given document to a local file.
     The calling function is responsible for the resulting file.
@@ -30,7 +30,8 @@ def download(doc_msg):
     :param doc_msg: Dictionary containing the following keys:
 
        :url: path to a distant document
-
+    :param timeout: Request timeout in seconds
+    :param max_try: Maximal number of tries
     :returns: object of type Document.
     """
     logger = getLogger(__name__)
@@ -38,14 +39,17 @@ def download(doc_msg):
     logger.info("Getting remote document at %s", url)
     extension = os.path.splitext(url)[-1]
     cur_try = 1
-    max_try = 5
     response = None
 
-    # TODO : Handle cases where urlopen doesn't throw error but the result
-    #        isn't 200
     while cur_try <= max_try and response is None:
         try:
-            response = requests.get(url, timeout=TIMEOUT, stream=True)
+            response = requests.get(url, timeout=timeout, stream=True)  # shutil.copyfileobj doesn't work well
+                                                                        # if stream=False
+            if response.status_code not in [200, 201]:
+                logger.error(("Could not download document at URL {}."
+                              " Response code from the server : {}").format(url, response.status_code))
+                raise DownloadError(("Could not download document at URL {}. "
+                                     "Response code from the server : {}").format(url, response.status_code))
         except requests.Timeout as error:
             # Handle timeout error separately
             if cur_try < max_try:
@@ -62,8 +66,8 @@ def download(doc_msg):
     with NamedTemporaryFile(mode='w+b',
                             suffix=extension,
                             delete=False) as destination:
-        for chunk in response.iter_content(CHUNK_SIZE):
-            destination.write(chunk)
+        response.raw.decode_content = True
+        shutil.copyfileobj(response.raw, destination)
     doc = Document(url=url, path=destination.name)
     logger.info("Download of URL %s complete", doc.url)
     logger.debug("Local copy name is : %s", doc.local_path)
