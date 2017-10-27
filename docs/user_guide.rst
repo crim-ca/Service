@@ -22,6 +22,7 @@ Using and starting the service is done through the `Celery application interface
       :url: The original URL from which the copy was obtained.
 
    :callback_url: A field containing a URL to which the class will issue a POST request once the task has completed giving task ID and completion status.
+   :misc: A field containing all arbitrary arguments which can be issued to the ServiceGateway without prior knowledge.
 
 * Use of the Python logging interface is highly recommended so that distributed instances can produce logs to a centralised instance (Syslog for instance). Furthermore, Celery provides a task logger which injects contextual information for the task execution in the log messages. This is also highly recommended.
 * Resulting annotations in the context of the Vesta infrastructure uses `JSON-LD <http://json-ld.org/>`_ annotations format. Typically one can save the annotations to a `JASS : JSON-LD Annotations Storage System <http://services.vesta.crim.ca/docs/jass/latest/>`_ which might be deployed in the context of a given infrastructure. Care must be taken to define a valid JSON-LD schema and place a copy of that schema in a public HTTP repository and include a link to that schema within the produced annotations.
