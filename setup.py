@@ -22,7 +22,7 @@ else:
 
 REQUIREMENTS = [
     "celery==3.1.19",
-    "requests==2.8.1",
+    "requests[security]==2.13",
 ]
 
 TEST_REQUIREMENTS = [

@@ -1,1 +1,5 @@
 *.pyc
+/.idea
+/.python-version
+/.tox
+/VestaService.egg-info
