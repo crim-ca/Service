@@ -52,7 +52,7 @@ class TestUtilities(unittest.TestCase):
         MAX_TRY = 1
 
         #Testing the error returned when the respons code != 200
-        doc_msg= {"url" : "http://www.crim.ca/page_inconnue"}
+        doc_msg = {"url": "http://www.crim.ca/page_inconnue"}
         with self.assertRaises(DownloadError):
             doc = RemoteAccess.download(doc_msg, max_try=MAX_TRY)
 
