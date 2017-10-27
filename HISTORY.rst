@@ -1,6 +1,12 @@
 Release notes
 =============
 
+0.2.3
+-----
+
+* Using the package requests[security] rather than requests to avoid download errors with python versions < 2.7.9
+* For the download, passing the timeout and the max_try in parameters. Using shutil.copyfileobj to write file on disk
+
 0.2.2
 -----
 
