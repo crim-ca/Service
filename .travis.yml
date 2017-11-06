@@ -1,25 +1,20 @@
 language: python
-
 python: 3.5
 env:
-  - TOXENV=py27
-  - TOXENV=py34
-  - TOXENV=py35
-
+- TOXENV=py27
+- TOXENV=py34
+- TOXENV=py35
 install:
-  - pip install -U tox
-
+- pip install -U tox
 script:
-  - tox
-
+- tox
 notifications:
   slack: crim-ca:A7jqt2VJWnPwN6A3AZXJ40gt
-
 deploy:
   provider: pypi
   distributions: bdist_wheel
   user: crim-ca
   password:
-    secure: "Vsahlos3N+4bUcBdZLMlJvx25rjic98JMz179Go1oLeYLuWk5/iafWnI9JcyiVjzg5SCGlI84c97I3X6wwK1Obw/pMIPstN4WBtk7t5/NXWoLcenXaVoFwaAalpy9qjdkRj2nSnLsqqNg/mcFKhjyESG3P/VrzDFRDQs10TycJFlrf7ozeXl20cWdE/Je33bufMmdjDiTaECUhqHKqI/rXbn6nlsJjbgo6JUuQotDLGyxWMLIHpVCBfrUCcq/exHqiMjmxPW/sbCqSgk1S+qpYrlj0oUHW1JDzsDoatW/YZmL1wcJ44M+0BVBtNtwVtOpHD5TV4XskxaBeUr7yF8SVIr2DPCgfkS5yOqOHDWGTA9RpvTgQmmM4hHhDvX3Pek6Q2RK0QHxUyy5/7euyR1nUvg7f0g1fGoi/HbZuSwhyu3laAYQpXd8c8cahVNYYOmqAf4uTjRJTTI2YqhZzobat3QH41hgBIeECbo755/IcxrUBhNMK1DUzOTiDuWNbHqBK0tzW0WCH09CLsHhhd4bGw59GxMutL4a0UXQxMuK8x8CfMqHIz2IP7ITraq5mtJWWE42naFHgxDgnYuPE9Y41f7gJSzVFBKQFJRRuvwO/V9sLtAWqQ8U46GbUi9v9KC1q14TrqZeje6q3OMHn+Ca/dGK8RO/6oo/P1l3klDADg="
+    secure: iVmAqp2rLMd7yaWMismfecm5oz9WQ4G2xqB+DDOkY5wgxU/tmaeWrp2SwZhf5f8gWDX9hFoRekctkq6bANfSY5zCjmkzxJSHg7Uzt8x0vOCXenQo1+EujFJRnfSp9Hyl47jQaWU0/2N4F4I/lXxeojKhwGgyuaiyiQtqthfrH7UF+BFjltIctcLODolk/O0SJQMImnMkt8L7PR2Jcfkr8gaa+yw6AIuNN5QOQR9yksOByAsFziQoMg4UVenKGyamiEYzNbVNUsiWA7h+Ivc7KhC3dvKgpwS/eo/tX4JbxfN/fF9R5hJBT7yZRA/dSztaCxV6M3+0dnpj9GHWVRdDH6CgUzAzUrpVxLbKfHLOyN+wC3uwWsqCrlUkE+a7m8kb6wGjWc7Z47AQiYvrnNvwGGYc+Vm+Atcgc1EWmYvYkeLyTVibWIFP/PZInETEyj7l0fB7cbZ+QMyMk8vekrd5IBhvrF/GaEV9m1jONa54ubbQB+oMolk8uM6taVx4qGZgeKLpWa+hMo/jWz/TG9Ka4vG7C4cgC/y1DJX1G2jZVazKBjbJiBFm2HDFnWLcBN36Y3w/zdb6wqk9wmwCpX+7t0/aAhDWpi64hWtLMstaE9n6XJUvq/SpfJxzeR+Po1ylmzlFsriBRKaLEhxyjB2Efn9Lpuyu8SBLsH9331H6As0=
   on:
     tags: true
