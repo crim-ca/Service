@@ -10,6 +10,9 @@ an annotation storage request. It is adapted to the Annotations Storage Service
 import optparse
 import logging
 import json
+import zipfile
+import tempfile
+import os
 
 # 3rd party requirements -----------------------------------------------------
 import requests
@@ -19,14 +22,14 @@ from .service_exceptions import (UploadError, InvalidAnnotationFormat)
 
 TIMEOUT = 10
 
-
-def submit_annotations(ann_srv_url, annotations):
+def submit_annotations(ann_srv_url, annotations, send_zip=False):
     """
     Call the Annotation Storage Service to save annotations.
 
     :param ann_srv_url: URL of the annotation service where the annotations
                         will be stored.
     :param annotations: Annotations to append to the annotations Document.
+    :param send_zip: indicates if the annotations should be sent in a zip file
     :type annotations: list
     """
     logger = logging.getLogger(__name__)
@@ -43,20 +46,50 @@ def submit_annotations(ann_srv_url, annotations):
     payload = json.dumps({'common': {},
                           'data': annotations})
 
-    headers = {'content-type': 'application/json',
-               'accept': 'application/json'}
-
     logger.debug("Upload URL is %s", ann_srv_url)
     logger.debug("Submitted data is %s", payload)
+
+    files = None
+    temp_text_file = None
+    temp_zip_file = None
+
+    if send_zip:
+        headers = {'accept': 'application/json'}
+        # creating annotations.txt file to be zipped
+        temp_dir = tempfile.gettempdir()
+        text_file_name = "annotations.txt"
+        zip_file_name = "annotations.zip"
+        temp_text_file = os.path.join(temp_dir, text_file_name)
+        temp_zip_file = os.path.join(temp_dir, zip_file_name)
+        with open(temp_text_file, 'w') as file_to_zip:
+            file_to_zip.write(str(payload))
+
+        # creating zipped file
+        with zipfile.ZipFile(temp_zip_file, "w", compression=zipfile.ZIP_DEFLATED) as zippy:
+            zippy.write(temp_text_file, text_file_name)
+            zippy.close()
+
+        # Opened for transport (HTTP POST via form-data, as bytes)
+            opened_zipped_file = open(temp_zip_file, "rb")
+            files = {"file": opened_zipped_file}
+    else:
+        headers = {'content-type': 'application/json',
+                   'accept': 'application/json'}
 
     while cur_try <= max_tries and not result:
         logger.debug("Trying HTTP POST request %s/%s", cur_try, max_tries)
 
         try:
-            result = requests.post(ann_srv_url,
+            if files is None:
+                result = requests.post(ann_srv_url,
                                    data=payload,
                                    timeout=TIMEOUT,
                                    headers=headers)
+            else:
+                result = requests.post(ann_srv_url,
+                                    files=files,
+                                    timeout=TIMEOUT,
+                                    headers=headers)
 
             if result.status_code not in [200, 201, 204]:
                 logger.error("Got following code : %s", result.status_code)
@@ -78,6 +111,14 @@ def submit_annotations(ann_srv_url, annotations):
             logger.error("Could not upload document to %s", ann_srv_url)
             raise UploadError(error)
 
+        finally:
+            # Delete artifacts
+            if temp_text_file and os.path.exists(temp_text_file) and os.path.isfile(temp_text_file):
+                os.remove(temp_text_file)
+            if temp_zip_file and os.path.exists(temp_zip_file) and os.path.isfile(temp_zip_file):
+                os.remove(temp_zip_file)
+
+    return result
 
 def main():
     """
