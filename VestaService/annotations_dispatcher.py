@@ -22,6 +22,7 @@ from .service_exceptions import (UploadError, InvalidAnnotationFormat)
 
 TIMEOUT = 10
 
+
 def submit_annotations(ann_srv_url, annotations, send_zip=False):
     """
     Call the Annotation Storage Service to save annotations.
@@ -65,7 +66,8 @@ def submit_annotations(ann_srv_url, annotations, send_zip=False):
             file_to_zip.write(str(payload))
 
         # creating zipped file
-        with zipfile.ZipFile(temp_zip_file, "w", compression=zipfile.ZIP_DEFLATED) as zippy:
+        with zipfile.ZipFile(temp_zip_file, "w",
+                             compression=zipfile.ZIP_DEFLATED) as zippy:
             zippy.write(temp_text_file, text_file_name)
             zippy.close()
 
@@ -82,14 +84,14 @@ def submit_annotations(ann_srv_url, annotations, send_zip=False):
         try:
             if files is None:
                 result = requests.post(ann_srv_url,
-                                   data=payload,
-                                   timeout=TIMEOUT,
-                                   headers=headers)
+                                       data=payload,
+                                       timeout=TIMEOUT,
+                                       headers=headers)
             else:
                 result = requests.post(ann_srv_url,
-                                    files=files,
-                                    timeout=TIMEOUT,
-                                    headers=headers)
+                                       files=files,
+                                       timeout=TIMEOUT,
+                                       headers=headers)
 
             if result.status_code not in [200, 201, 204]:
                 logger.error("Got following code : %s", result.status_code)
@@ -113,12 +115,15 @@ def submit_annotations(ann_srv_url, annotations, send_zip=False):
 
         finally:
             # Delete artifacts
-            if temp_text_file and os.path.exists(temp_text_file) and os.path.isfile(temp_text_file):
+            if temp_text_file and os.path.exists(temp_text_file) and\
+               os.path.isfile(temp_text_file):
                 os.remove(temp_text_file)
-            if temp_zip_file and os.path.exists(temp_zip_file) and os.path.isfile(temp_zip_file):
+            if temp_zip_file and os.path.exists(temp_zip_file) and\
+               os.path.isfile(temp_zip_file):
                 os.remove(temp_zip_file)
 
     return result
+
 
 def main():
     """
