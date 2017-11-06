@@ -1,6 +1,11 @@
 Release notes
 =============
 
+0.3.0
+-----
+
+* Add argument permitting annotation uploads in ZIP format.
+
 0.2.3
 -----
 

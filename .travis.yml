@@ -15,13 +15,11 @@ script:
 notifications:
   slack: crim-ca:A7jqt2VJWnPwN6A3AZXJ40gt
 
-# deploy:
-#   provider: pypi
-#   distributions: sdist
-#   user: crim-ca
-#   password:
-#     secure: PLEASE_REPLACE_ME
-#   on:
-#     tags: true
-#     repo: audreyr/python_boilerplate
-#     condition: $TOXENV == py27
+deploy:
+  provider: pypi
+  distributions: bdist_wheel
+  user: crim-ca
+  password:
+    secure: "Vsahlos3N+4bUcBdZLMlJvx25rjic98JMz179Go1oLeYLuWk5/iafWnI9JcyiVjzg5SCGlI84c97I3X6wwK1Obw/pMIPstN4WBtk7t5/NXWoLcenXaVoFwaAalpy9qjdkRj2nSnLsqqNg/mcFKhjyESG3P/VrzDFRDQs10TycJFlrf7ozeXl20cWdE/Je33bufMmdjDiTaECUhqHKqI/rXbn6nlsJjbgo6JUuQotDLGyxWMLIHpVCBfrUCcq/exHqiMjmxPW/sbCqSgk1S+qpYrlj0oUHW1JDzsDoatW/YZmL1wcJ44M+0BVBtNtwVtOpHD5TV4XskxaBeUr7yF8SVIr2DPCgfkS5yOqOHDWGTA9RpvTgQmmM4hHhDvX3Pek6Q2RK0QHxUyy5/7euyR1nUvg7f0g1fGoi/HbZuSwhyu3laAYQpXd8c8cahVNYYOmqAf4uTjRJTTI2YqhZzobat3QH41hgBIeECbo755/IcxrUBhNMK1DUzOTiDuWNbHqBK0tzW0WCH09CLsHhhd4bGw59GxMutL4a0UXQxMuK8x8CfMqHIz2IP7ITraq5mtJWWE42naFHgxDgnYuPE9Y41f7gJSzVFBKQFJRRuvwO/V9sLtAWqQ8U46GbUi9v9KC1q14TrqZeje6q3OMHn+Ca/dGK8RO/6oo/P1l3klDADg="
+  on:
+    tags: true
