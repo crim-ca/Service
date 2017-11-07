@@ -1,6 +1,11 @@
 Release notes
 =============
 
+0.3.1
+-----
+
+* Add a Report class normalizing format of execution reports.
+
 0.3.0
 -----
 
