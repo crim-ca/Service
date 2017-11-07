@@ -1,10 +1,15 @@
 #!/usr/bin/env python
 # coding:utf-8
 
+"""
+This module defines a format for the report written by the worker
+after each task and sent to the platform.
+"""
+
 # -- standard library ---------------------------------------------------------
-from enum import Enum
 import json
 import copy
+from enum import Enum
 
 
 class ReportStatus(Enum):
