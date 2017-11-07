@@ -7,9 +7,9 @@ after each task and sent to the platform.
 """
 
 # -- standard library ---------------------------------------------------------
+from enum import Enum
 import json
 import copy
-from enum import Enum
 
 
 class ReportStatus(Enum):
@@ -126,7 +126,7 @@ class WorkerReport:
                            nb_ignores=self.nb_ignores,
                            nb_failures=self.nb_failures,
                            full_report_url=url)
-        encoder= json.JSONEncoder()
+        encoder = json.JSONEncoder()
         return encoder.encode(report_dict)
 
 
