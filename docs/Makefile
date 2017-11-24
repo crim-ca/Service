@@ -47,7 +47,7 @@ html:
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 
 install: html
-	./sync.py --destination centos@services.vesta.crim.ca:/usr/share/nginx/html/docs/Service/
+	./sync.py --destination vesta_docs:/usr/share/nginx/html/docs/Service/
 
 dirhtml:
 	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml

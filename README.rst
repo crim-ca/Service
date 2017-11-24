@@ -9,7 +9,7 @@ interface.
 Messages are communicated through a `Celery <http://www.celeryproject.org/>`_
 distributed processing queue system. Celery can be configured to run with
 various backends such as RabbitMQ or Reddis. It is mainly meant to work with
-the Vesta `Service Gateway <http://services.vesta.crim.ca/docs/sg/latest/>`_ .
+the Vesta `Service Gateway <http://vesta.crim.ca/docs/sg/latest/>`_ .
 
 Requirements / installation
 ---------------------------
