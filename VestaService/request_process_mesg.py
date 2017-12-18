@@ -19,6 +19,8 @@ from celery import Celery
 from .service_exceptions import ConfigFileNotFound
 from . import Message
 
+ENCODING = 'utf-8'
+
 
 # ----------------------------------------------------------------------------
 class WorkerExceptionWrapper(Exception):
@@ -32,14 +34,14 @@ class WorkerExceptionWrapper(Exception):
         Build worker Exception wrapper instance.
 
         >>> w = WorkerExceptionWrapper('abcd1234', 'status',\
-                                       u'This is a test «»', 'traceback')
+                                       'This is a test', 'traceback')
 
         """
         self.task_uuid = task_uuid
         self.task_status = task_status
         self.worker_exception = worker_exception
         self.worker_exc_traceback = worker_exc_traceback
-        w_e_msg = worker_exception
+        w_e_msg = str(worker_exception).encode(ENCODING)
         super(WorkerExceptionWrapper, self).__init__(w_e_msg)
 
 
