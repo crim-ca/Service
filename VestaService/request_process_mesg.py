@@ -34,14 +34,20 @@ class WorkerExceptionWrapper(Exception):
         Build worker Exception wrapper instance.
 
         >>> w = WorkerExceptionWrapper('abcd1234', 'status',\
-                                       'This is a test', 'traceback')
+                                       u'This is a test «»', 'traceback')
 
         """
+        logger = logging.getLogger(__name__)
         self.task_uuid = task_uuid
         self.task_status = task_status
         self.worker_exception = worker_exception
         self.worker_exc_traceback = worker_exc_traceback
-        w_e_msg = str(worker_exception).encode(ENCODING)
+        logger.debug("exception has type %s", type(worker_exception))
+        w_e_msg_str = repr(worker_exception)
+        logger.debug("exception string has type %s", type(w_e_msg_str))
+        w_e_msg = w_e_msg_str.encode(ENCODING)
+        logger.debug("exception message has type %s with contents %s",
+                     type(w_e_msg), w_e_msg)
         super(WorkerExceptionWrapper, self).__init__(w_e_msg)
 
 
