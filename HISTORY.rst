@@ -1,6 +1,11 @@
 Release notes
 =============
 
+0.3.2
+-----
+
+* Fix handling of service exception messages with UTF-8 content.
+
 0.3.1
 -----
 
