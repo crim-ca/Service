@@ -1,6 +1,12 @@
 Release notes
 =============
 
+0.3.3
+-----
+
+* Changing version of requests to add flexibility.
+
+
 0.3.2
 -----
 
