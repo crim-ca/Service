@@ -22,7 +22,8 @@ from .Document import Document
 TIMEOUT = 10
 MAX_TRY = 5
 
-def download(doc_msg, timeout = TIMEOUT, max_try = MAX_TRY):
+
+def download(doc_msg, timeout=TIMEOUT, max_try=MAX_TRY):
     """
     Download a given document to a local file.
     The calling function is responsible for the resulting file.
@@ -43,13 +44,15 @@ def download(doc_msg, timeout = TIMEOUT, max_try = MAX_TRY):
 
     while cur_try <= max_try and response is None:
         try:
-            response = requests.get(url, timeout=timeout, stream=True)  # shutil.copyfileobj doesn't work well
-                                                                        # if stream=False
+            # shutil.copyfileobj doesn't work well if stream=False
+            response = requests.get(url, timeout=timeout, stream=True)
             if response.status_code not in [200, 201]:
                 logger.error(("Could not download document at URL {}."
-                              " Response code from the server : {}").format(url, response.status_code))
+                              " Response code from the server : {}")
+                             .format(url, response.status_code))
                 raise DownloadError(("Could not download document at URL {}. "
-                                     "Response code from the server : {}").format(url, response.status_code))
+                                     "Response code from the server : {}")
+                                    .format(url, response.status_code))
         except requests.Timeout as error:
             # Handle timeout error separately
             if cur_try < max_try:
