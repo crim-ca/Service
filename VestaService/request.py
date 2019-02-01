@@ -15,6 +15,7 @@ import os
 from .annotations_dispatcher import submit_annotations
 from .service_exceptions import MissingArgumentError
 from . import RemoteAccess
+from . import sentry_agent
 
 # -- third-party --------------------------------------------------------------
 from celery.utils.log import get_task_logger
