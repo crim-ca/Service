@@ -1,6 +1,11 @@
 Release notes
 =============
 
+0.4.0
+-----
+
+* Uses sentry agent for bug reporting. See sentry documentation.
+
 0.3.3
 -----
 
