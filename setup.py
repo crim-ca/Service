@@ -22,7 +22,7 @@ else:
 
 REQUIREMENTS = [
     "celery==3.1.19",
-    "requests[security]>=2.13,<=2.18.4",
+    "requests[security]>=2.20.0",
     "sentry-sdk"
 ]
 
