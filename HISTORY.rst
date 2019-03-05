@@ -1,6 +1,11 @@
 Release notes
 =============
 
+0.4.2
+-----
+
+* Really added Celery integration to sentry agent
+
 0.4.1
 -----
 
