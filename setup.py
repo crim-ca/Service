@@ -21,7 +21,7 @@ else:
     HISTORY = ""
 
 REQUIREMENTS = [
-    "celery==3.1.19",
+    "celery==4.3.0",
     "requests[security]>=2.20.0",
     "sentry-sdk"
 ]
