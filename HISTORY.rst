@@ -1,6 +1,11 @@
 Release notes
 =============
 
+0.4.3
+-----
+
+* Upgraded Celery to 4.3.0
+
 0.4.2
 -----
 
