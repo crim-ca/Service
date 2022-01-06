@@ -1,4 +1,4 @@
 nose
-celery==4.3.0
+celery==5.2.2
 requests[security]>=2.20.0
 sentry-sdk
